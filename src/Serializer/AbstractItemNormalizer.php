@@ -435,6 +435,10 @@ abstract class AbstractItemNormalizer extends AbstractObjectNormalizer implement
             $context['resource_class'] = $className;
             $context['api_allow_update'] = true;
             unset($context[self::OBJECT_TO_POPULATE]);
+            if ($this->resourceClassResolver->isResourceClass($className) && !empty($this->resourceMetadataFactory)) {
+                $resourceMetadata = $this->resourceMetadataFactory->create($className);
+                $context['input'] = $resourceMetadata->getAttribute('input');
+            }
 
             try {
                 if (!$this->serializer instanceof DenormalizerInterface) {
