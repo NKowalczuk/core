@@ -432,6 +432,10 @@ abstract class AbstractItemNormalizer extends AbstractObjectNormalizer
         if ($propertyMetadata->isWritableLink()) {
             $context['api_allow_update'] = true;
             unset($context[self::OBJECT_TO_POPULATE]);
+            if ($this->resourceClassResolver->isResourceClass($className) && !empty($this->resourceMetadataFactory)) {
+                $resourceMetadata = $this->resourceMetadataFactory->create($className);
+                $context['input'] = $resourceMetadata->getAttribute('input');
+            }
 
             if (!$this->serializer instanceof DenormalizerInterface) {
                 throw new LogicException(sprintf('The injected serializer must be an instance of "%s".', DenormalizerInterface::class));
