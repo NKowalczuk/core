@@ -113,6 +113,15 @@ final class ItemNormalizer extends AbstractItemNormalizer
 
             $context[self::OBJECT_TO_POPULATE] = $this->iriConverter->getItemFromIri($data['@id'], $context + ['fetch_data' => true]);
         }
+        if (\is_string($data) && \strpos($data,'/') === 0 && !isset($context[self::OBJECT_TO_POPULATE])) {
+            try {
+                if (true === ($context['api_allow_update'] ?? true)) {
+                    $context[self::OBJECT_TO_POPULATE] = $this->iriConverter->getItemFromIri($data, $context + ['fetch_data' => true]);
+                }
+            } catch (\Exception $e) {
+                // safely ignore
+            }
+        }
 
         return parent::denormalize($data, $class, $format, $context);
     }
