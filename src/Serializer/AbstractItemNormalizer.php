@@ -71,7 +71,7 @@ abstract class AbstractItemNormalizer extends AbstractObjectNormalizer implement
             };
         }
         if (!interface_exists(AdvancedNameConverterInterface::class)) {
-            $this->setCircularReferenceHandler($defaultContext['circular_reference_handler']);
+            $this->defaultContext['circular_reference_handler'] = $defaultContext['circular_reference_handler'];
         }
 
         parent::__construct($classMetadataFactory, $nameConverter, null, null, \Closure::fromCallable([$this, 'getObjectClass']), $defaultContext);

@@ -66,7 +66,7 @@ final class ApiPlatformParser implements ParserInterface
     public function supports(array $item)
     {
         $data = explode(':', $item['class'], 3);
-        if (!\in_array($data[0], [self::IN_PREFIX, self::OUT_PREFIX], true)) {
+        if (!\in_array($data[0], [$this::IN_PREFIX, $this::OUT_PREFIX], true)) {
             return false;
         }
         if (!isset($data[1])) {
@@ -149,13 +149,13 @@ final class ApiPlatformParser implements ParserInterface
         $operation = $this->getGroupsContext($resourceMetadata, $operationName, true);
         $operation += $this->getGroupsContext($resourceMetadata, $operationName, false);
 
-        if (self::OUT_PREFIX === $io) {
+        if ($this::OUT_PREFIX === $io) {
             return [
                 'serializer_groups' => !empty($operation['normalization_context']) ? $operation['normalization_context'][AbstractNormalizer::GROUPS] : [],
             ];
         }
 
-        if (self::IN_PREFIX === $io) {
+        if ($this::IN_PREFIX === $io) {
             return [
                 'serializer_groups' => !empty($operation['denormalization_context']) ? $operation['denormalization_context'][AbstractNormalizer::GROUPS] : [],
             ];
@@ -177,8 +177,8 @@ final class ApiPlatformParser implements ParserInterface
         foreach ($this->propertyNameCollectionFactory->create($resourceClass, $options) as $propertyName) {
             $propertyMetadata = $this->propertyMetadataFactory->create($resourceClass, $propertyName);
             if (
-                ($propertyMetadata->isReadable() && self::OUT_PREFIX === $io) ||
-                ($propertyMetadata->isWritable() && self::IN_PREFIX === $io)
+                ($propertyMetadata->isReadable() && $this::OUT_PREFIX === $io) ||
+                ($propertyMetadata->isWritable() && $this::IN_PREFIX === $io)
             ) {
                 $normalizedPropertyName = $this->nameConverter ? $this->nameConverter->normalize($propertyName, $resourceClass) : $propertyName;
                 $data[$normalizedPropertyName] = $this->parseProperty($resourceMetadata, $propertyMetadata, $io, null, $visited);
@@ -215,7 +215,7 @@ final class ApiPlatformParser implements ParserInterface
 
             if ($collectionType = $type->getCollectionValueType()) {
                 $subProperty = $this->parseProperty($resourceMetadata, $propertyMetadata, $io, $collectionType, $visited);
-                if (self::TYPE_IRI === $subProperty['dataType']) {
+                if ($this::TYPE_IRI === $subProperty['dataType']) {
                     $data['dataType'] = 'array of IRIs';
                     $data['subType'] = DataTypes::STRING;
 
@@ -252,10 +252,10 @@ final class ApiPlatformParser implements ParserInterface
             }
 
             if (
-                (self::OUT_PREFIX === $io && true !== $propertyMetadata->isReadableLink()) ||
-                (self::IN_PREFIX === $io && true !== $propertyMetadata->isWritableLink())
+                ($this::OUT_PREFIX === $io && true !== $propertyMetadata->isReadableLink()) ||
+                ($this::IN_PREFIX === $io && true !== $propertyMetadata->isWritableLink())
             ) {
-                $data['dataType'] = self::TYPE_IRI;
+                $data['dataType'] = $this::TYPE_IRI;
                 $data['actualType'] = DataTypes::STRING;
 
                 return $data;
@@ -268,7 +268,7 @@ final class ApiPlatformParser implements ParserInterface
             return $data;
         }
 
-        $data['dataType'] = self::TYPE_MAP[$builtinType] ?? DataTypes::STRING;
+        $data['dataType'] = $this::TYPE_MAP[$builtinType] ?? DataTypes::STRING;
 
         return $data;
     }

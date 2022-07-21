@@ -16,7 +16,9 @@ namespace ApiPlatform\Core\Bridge\Doctrine\Orm\Filter;
 use ApiPlatform\Core\Bridge\Doctrine\Common\Filter\BooleanFilterTrait;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use Doctrine\DBAL\Types\Type as DBALType;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\QueryBuilder;
+use Nette\Utils\Type;
 
 /**
  * Filters the collection by boolean values.
@@ -35,7 +37,7 @@ class BooleanFilter extends AbstractContextAwareFilter
     use BooleanFilterTrait;
 
     public const DOCTRINE_BOOLEAN_TYPES = [
-        DBALType::BOOLEAN => true,
+        Types::BOOLEAN => true,
     ];
 
     /**

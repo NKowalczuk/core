@@ -19,7 +19,6 @@ use Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolverIn
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
@@ -68,14 +67,12 @@ final class ResourceAccessChecker implements ResourceAccessCheckerInterface
      */
     private function getVariables(TokenInterface $token): array
     {
-        $roles = $this->roleHierarchy ? $this->roleHierarchy->getReachableRoles($token->getRoles()) : $token->getRoles();
+        $roles = $this->roleHierarchy ? $this->roleHierarchy->getReachableRoles($token->getRoleNames()) : $token->getRoleNames();
 
         return [
             'token' => $token,
             'user' => $token->getUser(),
-            'roles' => array_map(function (Role $role) {
-                return $role->getRole();
-            }, $roles),
+            'roles' => $roles,
             'trust_resolver' => $this->authenticationTrustResolver,
             // needed for the is_granted expression function
             'auth_checker' => $this->authorizationChecker,

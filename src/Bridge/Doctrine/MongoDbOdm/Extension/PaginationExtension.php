@@ -105,7 +105,7 @@ final class PaginationExtension implements AggregationResultCollectionExtensionI
             throw new RuntimeException(sprintf('The manager for "%s" must be an instance of "%s".', $resourceClass, DocumentManager::class));
         }
 
-        return new Paginator($aggregationBuilder->execute(), $manager->getUnitOfWork(), $resourceClass, $aggregationBuilder->getPipeline());
+        return new Paginator($aggregationBuilder->getAggregation()->getIterator(), $manager->getUnitOfWork(), $resourceClass, $aggregationBuilder->getPipeline());
     }
 
     private function addCountToContext(Builder $aggregationBuilder, array $context): array
@@ -115,7 +115,7 @@ final class PaginationExtension implements AggregationResultCollectionExtensionI
         }
 
         if (isset($context['filters']['last']) && !isset($context['filters']['before'])) {
-            $context['count'] = $aggregationBuilder->count('count')->execute()->toArray()[0]['count'];
+            $context['count'] = $aggregationBuilder->count('count')->getAggregation()->getIterator()->toArray()[0]['count'];
         }
 
         return $context;

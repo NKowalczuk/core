@@ -72,6 +72,6 @@ final class CollectionDataProvider implements CollectionDataProviderInterface, R
             }
         }
 
-        return $aggregationBuilder->hydrate($resourceClass)->execute();
+        return $aggregationBuilder->hydrate($resourceClass)->getAggregation();
     }
 }

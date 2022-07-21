@@ -20,6 +20,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Common\Filter\SearchFilterTrait;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ODM\MongoDB\Aggregation\Builder;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata as MongoDBClassMetadata;
 use Doctrine\ODM\MongoDB\Types\Type as MongoDbType;
@@ -41,7 +42,7 @@ final class SearchFilter extends AbstractFilter implements SearchFilterInterface
 {
     use SearchFilterTrait;
 
-    public const DOCTRINE_INTEGER_TYPE = MongoDbType::INTEGER;
+    public const DOCTRINE_INTEGER_TYPE = Types::INTEGER;
 
     public function __construct(ManagerRegistry $managerRegistry, IriConverterInterface $iriConverter, IdentifiersExtractorInterface $identifiersExtractor, PropertyAccessorInterface $propertyAccessor = null, LoggerInterface $logger = null, array $properties = null, NameConverterInterface $nameConverter = null)
     {
@@ -192,10 +193,10 @@ final class SearchFilter extends AbstractFilter implements SearchFilterInterface
     {
         switch ($doctrineType) {
             case MongoDbType::INT:
-            case MongoDbType::INTEGER:
+            case Types::INTEGER:
                 return 'int';
             case MongoDbType::BOOL:
-            case MongoDbType::BOOLEAN:
+            case Types::BOOLEAN:
                 return 'bool';
             case MongoDbType::DATE:
                 return \DateTimeInterface::class;

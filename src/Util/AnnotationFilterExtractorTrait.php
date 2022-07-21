@@ -15,7 +15,7 @@ namespace ApiPlatform\Core\Util;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
 
 /**
  * Generates a service id for a generic filter.

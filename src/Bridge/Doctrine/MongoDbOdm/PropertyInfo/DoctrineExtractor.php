@@ -16,6 +16,7 @@ namespace ApiPlatform\Core\Bridge\Doctrine\MongoDbOdm\PropertyInfo;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ODM\MongoDB\Types\Type as MongoDbType;
 use Symfony\Component\PropertyInfo\PropertyListExtractorInterface;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
@@ -117,9 +118,8 @@ final class DoctrineExtractor implements PropertyListExtractorInterface, Propert
     private function getPhpType(string $doctrineType): ?string
     {
         switch ($doctrineType) {
-            case MongoDbType::INTEGER:
+            case Types::INTEGER:
             case MongoDbType::INT:
-            case MongoDbType::INTID:
             case MongoDbType::KEY:
                 return Type::BUILTIN_TYPE_INT;
             case MongoDbType::FLOAT:
@@ -136,7 +136,7 @@ final class DoctrineExtractor implements PropertyListExtractorInterface, Propert
             case MongoDbType::BINDATAUUID:
             case MongoDbType::BINDATAUUIDRFC4122:
                 return Type::BUILTIN_TYPE_STRING;
-            case MongoDbType::BOOLEAN:
+            case Types::BOOLEAN:
             case MongoDbType::BOOL:
                 return Type::BUILTIN_TYPE_BOOL;
         }
