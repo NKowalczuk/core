@@ -16,6 +16,7 @@ namespace ApiPlatform\Core\Util;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 
 /**
  * Generates a service id for a generic filter.
@@ -137,6 +138,6 @@ trait AnnotationFilterExtractorTrait
     {
         $suffix = null !== $filterId ? '_'.$filterId : $filterId;
 
-        return 'annotated_'.Inflector::tableize(str_replace('\\', '', $reflectionClass->getName().(new \ReflectionClass($filterClass))->getName().$suffix));
+        return 'annotated_'.InflectorFactory::create()->build()->tableize(str_replace('\\', '', $reflectionClass->getName().(new \ReflectionClass($filterClass))->getName().$suffix));
     }
 }

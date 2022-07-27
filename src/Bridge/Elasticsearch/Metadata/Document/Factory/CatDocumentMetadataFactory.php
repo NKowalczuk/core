@@ -17,6 +17,7 @@ use ApiPlatform\Core\Bridge\Elasticsearch\Exception\IndexNotFoundException;
 use ApiPlatform\Core\Bridge\Elasticsearch\Metadata\Document\DocumentMetadata;
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 
@@ -64,7 +65,7 @@ final class CatDocumentMetadataFactory implements DocumentMetadataFactoryInterfa
             return $this->handleNotFound($documentMetadata, $resourceClass);
         }
 
-        $index = Inflector::tableize($resourceShortName);
+        $index = InflectorFactory::create()->build()->tableize($resourceShortName);
 
         try {
             $this->client->cat()->indices(['index' => $index]);

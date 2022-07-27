@@ -16,6 +16,7 @@ namespace ApiPlatform\Core\Bridge\Doctrine\Orm\Metadata\Property;
 use ApiPlatform\Core\Metadata\Property\Factory\PropertyMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Property\PropertyMetadata;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
@@ -28,7 +29,7 @@ final class DoctrineOrmPropertyMetadataFactory implements PropertyMetadataFactor
     private $decorated;
     private $managerRegistry;
 
-    public function __construct(ManagerRegistry $managerRegistry, PropertyMetadataFactoryInterface $decorated)
+    public function __construct(Registry $managerRegistry, PropertyMetadataFactoryInterface $decorated)
     {
         $this->managerRegistry = $managerRegistry;
         $this->decorated = $decorated;

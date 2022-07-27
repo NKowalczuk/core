@@ -23,6 +23,7 @@ namespace ApiPlatform\Core\Annotation;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 
 /**
  * Hydrates attributes from annotation's parameters.
@@ -64,7 +65,7 @@ trait AttributesHydratorTrait
                 $this->attributes = [];
             }
 
-            $this->attributes += [Inflector::tableize($key) => $value];
+            $this->attributes += [InflectorFactory::create()->build()->tableize($key) => $value];
         }
     }
 }
